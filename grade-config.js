@@ -1,0 +1,1 @@
+﻿window.MEASUREMENT_LAB_GRADE = 6;

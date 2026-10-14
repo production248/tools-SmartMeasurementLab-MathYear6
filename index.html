@@ -1,0 +1,162 @@
+﻿<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffca4f">
+  <meta name="description" content="An interactive measurement laboratory for Malaysian Math Year 6 pupils.">
+  <title>Smart Measurement Lab - Math Year 6</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">📐</span>
+        <div>
+          <h1 data-i18n="appTitle">Jom Teroka Ukuran!</h1>
+          <p data-i18n="appSubtitle">Ukur, banding dan lihat hubungan unit.</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">
+          <span aria-hidden="true">🔊</span>
+          <span data-i18n="soundOn">Bunyi: Buka</span>
+        </button>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button class="language-btn active" type="button" data-lang="bm" aria-pressed="true">BM</button>
+          <button class="language-btn" type="button" data-lang="zh" aria-pressed="false">中文</button>
+          <button class="language-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <nav class="mode-tabs" id="modeTabs" aria-label="Learning modes">
+        <button class="mode-tab active" type="button" data-mode="length" aria-pressed="true">
+          <span aria-hidden="true">📏</span><span data-i18n="modeLength">Panjang</span>
+        </button>
+        <button class="mode-tab" type="button" data-mode="mass" aria-pressed="false">
+          <span aria-hidden="true">⚖️</span><span data-i18n="modeMass">Jisim</span>
+        </button>
+        <button class="mode-tab" type="button" data-mode="capacity" aria-pressed="false">
+          <span aria-hidden="true">🧪</span><span data-i18n="modeCapacity">Isi Padu Cecair</span>
+        </button>
+        <button class="mode-tab" type="button" data-mode="convert" aria-pressed="false">
+          <span aria-hidden="true">🔄</span><span data-i18n="modeConvert">Tukar Unit</span>
+        </button>
+      </nav>
+
+      <section class="workspace">
+        <aside class="control-panel" aria-labelledby="modeTitle">
+          <div class="panel-heading">
+            <span class="eyebrow" data-i18n="chooseActivity">Pilih aktiviti</span>
+            <h2 id="modeTitle">Panjang</h2>
+          </div>
+
+          <div id="controlsHost">
+            <label class="field" for="levelSelect">
+              <span data-i18n="level">Tahap</span>
+              <select id="levelSelect">
+                <option value="d1" data-i18n="levelD1">D1</option>
+                <option value="d2" data-i18n="levelD2">D2</option>
+                <option value="d3" data-i18n="levelD3">D3</option>
+                <option value="d4" data-i18n="levelD4">D4</option>
+                <option value="d5" data-i18n="levelD5">D5</option>
+                <option value="d6" data-i18n="levelD6">D6</option>
+              </select>
+            </label>
+
+            <label class="field" for="activitySelect" id="activityField">
+              <span data-i18n="activity">Aktiviti</span>
+              <select id="activitySelect"></select>
+            </label>
+
+            <label class="field" for="categorySelect" id="categoryField" hidden>
+              <span data-i18n="category">Jenis ukuran</span>
+              <select id="categorySelect">
+                <option value="length" data-i18n="modeLength">Panjang</option>
+                <option value="mass" data-i18n="modeMass">Jisim</option>
+                <option value="capacity" data-i18n="modeCapacity">Isi Padu Cecair</option>
+              </select>
+            </label>
+
+            <div class="how-to-card">
+              <span class="how-to-icon" aria-hidden="true">☝️</span>
+              <p id="howToText">Lihat alat ukuran dan pilih jawapan yang betul.</p>
+            </div>
+          </div>
+
+          <div class="side-actions">
+            <button class="teacher-btn" id="teacherBtn" type="button">
+              <span aria-hidden="true">👩‍🏫</span><span data-i18n="teacherMode">Soalan guru</span>
+            </button>
+            <button class="secondary-btn full-width" id="newQuestionBtn" type="button">
+              <span aria-hidden="true">↻</span><span data-i18n="newQuestion">Cuba soalan lain</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="visual-panel" aria-labelledby="promptText">
+          <div class="celebration-layer" id="celebrationLayer" aria-hidden="true"></div>
+
+          <div class="prompt-row">
+            <div>
+              <span class="eyebrow" data-i18n="yourTask">Mari cuba!</span>
+              <h2 id="promptText">Ukur objek ini.</h2>
+            </div>
+            <span class="level-badge" id="levelBadge">D1</span>
+          </div>
+
+          <div class="challenge-display" id="challengeDisplay" aria-live="polite"></div>
+          <div class="concept-stage" id="conceptStage"></div>
+          <div class="answer-zone" id="answerZone"></div>
+
+          <div class="answer-actions">
+            <button class="secondary-btn" id="resetBtn" type="button">
+              <span aria-hidden="true">↺</span><span data-i18n="reset">Mula semula</span>
+            </button>
+            <button class="primary-btn" id="checkBtn" type="button">
+              <span aria-hidden="true">✓</span><span data-i18n="check">Semak</span>
+            </button>
+          </div>
+
+          <div class="feedback" id="feedback" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="learning-strip" aria-label="Learning steps">
+        <div><span>1</span><strong id="stepOne">Lihat alat</strong></div>
+        <div><span>2</span><strong id="stepTwo">Pilih jawapan</strong></div>
+        <div><span>3</span><strong id="stepThree">Semak dan faham</strong></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="forest-footer" aria-hidden="true">
+    <img src="assets/forest-footer.png" alt="">
+  </div>
+
+  <div class="modal-backdrop" id="teacherModal" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="teacherTitle">
+      <button class="modal-close" id="teacherCloseBtn" type="button" aria-label="Close">×</button>
+      <span class="eyebrow" data-i18n="teacherMode">Soalan guru</span>
+      <h2 id="teacherTitle" data-i18n="customQuestion">Bina soalan sendiri</h2>
+      <p class="modal-intro" id="teacherIntro">Masukkan nilai untuk aktiviti semasa.</p>
+      <div class="teacher-fields" id="teacherFields"></div>
+      <p class="modal-error" id="teacherError" role="alert"></p>
+      <div class="modal-actions">
+        <button class="secondary-btn" id="teacherCancelBtn" type="button" data-i18n="cancel">Batal</button>
+        <button class="primary-btn" id="teacherUseBtn" type="button">
+          <span aria-hidden="true">✓</span><span data-i18n="useQuestion">Guna soalan ini</span>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="grade-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
